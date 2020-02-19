@@ -9,8 +9,8 @@
   aliases: 
 CMD*/
 
-let userid = user.telegramid
-let partnerlink = Libs.ReferralLib.currentUser.getRefLink( "LadyLucks_Bot",+userid);
+
+let partnerlink = Libs.ReferralLib.currentUser.getRefLink( "LadyLucks_Bot");
 
 let refdep = Libs.ResourcesLib.userRes("refDeposit")
 
