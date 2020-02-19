@@ -132,8 +132,8 @@ function attractedByChannel(){
 }
 
 function getRefLink(botName){
-  let aff_link='https://telegram.me/' + botName + 
-    '?start=Ref=' + u;
+  let aff_link='https://t.me/' + botName + 
+    '?start=' + u;
 
   let userKey = 'Ref=' + u;
   user.chatId = chat.chatid;
