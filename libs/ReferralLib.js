@@ -59,7 +59,7 @@ function isAlreadyAttracted(){
 }
 
 function trackRef(){
-  let prefix = 'user.tgid'
+  let prefix = 'user.telegramid'
 
   let uprefix = Bot.getProperty("REFLIB_refList_link_prefix");
   if(uprefix){ prefix = uprefix  }
@@ -113,7 +113,7 @@ function clearTopList(){
 }
 
 function getRefList(){
-  let refList = Bot.getProperty('REFLIB_refList' + user.tgid);
+  let refList = Bot.getProperty('REFLIB_refList' + user.telegramid);
   result = []
   if((refList)&&(refList.count>0)){
     result = refList.users;
@@ -122,7 +122,7 @@ function getRefList(){
 }
 
 function clearRefList(){
-  propName = 'REFLIB_refList' + user.id;
+  propName = 'REFLIB_refList' + user.telegramid;
   Bot.setProperty(propName, { users:[], count:0 }, 'json');
   return true;
 }
@@ -137,15 +137,15 @@ function attractedByChannel(){
 
 function getRefLink(botName, prefix){
   if(!prefix){
-    prefix = "user.tgid"
+    prefix = "user.telegramid"
   }else{
     Bot.setProperty("REFLIB_refList_" + "link_prefix", prefix, 'string');
   }
 
   let aff_link='https://t.me/' + botName + 
-    '?start='+ user.tgid;
+    '?start='+ user.telegramid;
 
-  let userKey = 'user.tgid' + user.tgid;
+  let userKey = 'user.telegramid' + user.telegramid;
   user.chatId = chat.chatid;
   Bot.setProperty('REFLIB_' + userKey, user, 'json');
   return aff_link;
