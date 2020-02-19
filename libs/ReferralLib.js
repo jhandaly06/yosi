@@ -5,9 +5,9 @@ function emitEvent(eventName, prms = {}){
   if(evenFun){ evenFun(prms) }
 }
 
-function saveRefListFor(user.tgid){
+function saveRefListFor(userId){
   // save RefList - JSON
-  propName = 'REFLIB_refList' + user.tgid;
+  propName = 'REFLIB_refList' + userId;
   refList = Bot.getProperty(propName);
 
   if(!refList){ refList = { count: 0, users:[] } };
@@ -31,8 +31,8 @@ function saveActiveUsers(userKey, refUser){
   Bot.setProperty('REFLIB_activityList', activityList, 'json');
 }
 
-function setReferralByAnotherUser(user.tgid){
-  let userKey = 'REFLIB_user' + user.tgid;
+function setReferralByAnotherUser(userId){
+  let userKey = 'REFLIB_user' + userId;
   // it is for secure reason. User can pass any params to start!
   let refUser = Bot.getProperty(userKey);
 
@@ -44,7 +44,7 @@ function setReferralByAnotherUser(user.tgid){
     return;
   }
 
-  saveRefListFor(user.tgid);
+  saveRefListFor(userId);
   saveActiveUsers(userKey, refUser);
 
   // refUser - it is JSON
@@ -59,12 +59,16 @@ function isAlreadyAttracted(){
 }
 
 function trackRef(){
+  let prefix = 'user.tgid'
 
-  let arr = params.split(user.tgid);
+  let uprefix = Bot.getProperty("REFLIB_refList_link_prefix");
+  if(uprefix){ prefix = uprefix  }
+
+  let arr = params.split(prefix);
   if((arr[0]=='')&&(arr[1])){
     // it is affiliated by another user
     let userId=arr[1];
-    setReferralByAnotherUser(user.tgid);
+    setReferralByAnotherUser(userId);
   }else{
     let channel = params;
     User.setProperty('REFLIB_attracted_by_channel', channel, 'string');
@@ -118,7 +122,7 @@ function getRefList(){
 }
 
 function clearRefList(){
-  propName = 'REFLIB_refList' + user.tgid;
+  propName = 'REFLIB_refList' + user.id;
   Bot.setProperty(propName, { users:[], count:0 }, 'json');
   return true;
 }
@@ -131,15 +135,17 @@ function attractedByChannel(){
   return User.getProperty('REFLIB_attracted_by_channel')
 }
 
-function getRefLink(botName){
-  
-    Bot.setProperty("REFLIB_refList_" + user.tgid, 'string');
+function getRefLink(botName, prefix){
+  if(!prefix){
+    prefix = "user.tgid"
+  }else{
+    Bot.setProperty("REFLIB_refList_" + "link_prefix", prefix, 'string');
   }
 
   let aff_link='https://t.me/' + botName + 
-    '?start=' + user.id;
+    '?start='+ user.tgid;
 
-  let userKey = 'user' + user.id;
+  let userKey = 'user.tgid' + user.tgid;
   user.chatId = chat.chatid;
   Bot.setProperty('REFLIB_' + userKey, user, 'json');
   return aff_link;
