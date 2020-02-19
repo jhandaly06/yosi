@@ -1,14 +1,15 @@
-let u = user.telegramid
+
 let trackOptions = {};
+tgid = user.telegramid
 
 function emitEvent(eventName, prms = {}){
   let evenFun = trackOptions[eventName]
   if(evenFun){ evenFun(prms) }
 }
 
-function saveRefListFor(u){
+function saveRefListFor(tgid){
   // save RefList - JSON
-  propName = 'REFLIB_refList' + u;
+  propName = 'REFLIB_refList' + tgid;
   refList = Bot.getProperty(propName);
 
   if(!refList){ refList = { count: 0, users:[] } };
@@ -32,8 +33,8 @@ function saveActiveUsers(userKey, refUser){
   Bot.setProperty('REFLIB_activityList', activityList, 'json');
 }
 
-function setReferralByAnotherUser(u){
-  let userKey = 'REFLIB_user' + u;
+function setReferralByAnotherUser(userId){
+  let userKey = 'REFLIB_user' + tgid;
   // it is for secure reason. User can pass any params to start!
   let refUser = Bot.getProperty(userKey);
 
@@ -45,7 +46,7 @@ function setReferralByAnotherUser(u){
     return;
   }
 
-  saveRefListFor(u);
+  saveRefListFor(tgid);
   saveActiveUsers(userKey, refUser);
 
   // refUser - it is JSON
@@ -60,11 +61,12 @@ function isAlreadyAttracted(){
 }
 
 function trackRef(){
-  let arr = params.split('Ref=');
+
+  let arr = params.split(prefix);
   if((arr[0]=='')&&(arr[1])){
     // it is affiliated by another user
-    let u=arr[1];
-    setReferralByAnotherUser(u);
+    let tgid=arr[1];
+    setReferralByAnotherUser(tgid);
   }else{
     let channel = params;
     User.setProperty('REFLIB_attracted_by_channel', channel, 'string');
@@ -109,7 +111,7 @@ function clearTopList(){
 }
 
 function getRefList(){
-  let refList = Bot.getProperty('REFLIB_refList' + u);
+  let refList = Bot.getProperty('REFLIB_refList' + tgid);
   result = []
   if((refList)&&(refList.count>0)){
     result = refList.users;
@@ -118,7 +120,7 @@ function getRefList(){
 }
 
 function clearRefList(){
-  propName = 'REFLIB_refList' + u;
+  propName = 'REFLIB_refList' + tgid;
   Bot.setProperty(propName, { users:[], count:0 }, 'json');
   return true;
 }
@@ -132,10 +134,11 @@ function attractedByChannel(){
 }
 
 function getRefLink(botName){
-  let aff_link='https://t.me/' + botName + 
-    '?start=' + u;
 
-  let userKey = 'Ref=' + u;
+  let aff_link='https://t.me/' + botName + 
+    '?start='+tgid;
+
+  let userKey = 'user' + tgid;
   user.chatId = chat.chatid;
   Bot.setProperty('REFLIB_' + userKey, user, 'json');
   return aff_link;
