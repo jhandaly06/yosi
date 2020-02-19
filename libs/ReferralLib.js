@@ -59,12 +59,7 @@ function isAlreadyAttracted(){
 }
 
 function trackRef(){
-  let prefix = 'user'
-
-  let uprefix = Bot.getProperty("REFLIB_refList_link_prefix");
-  if(uprefix){ prefix = uprefix  }
-
-  let arr = params.split(prefix);
+  let arr = params.split('user');
   if((arr[0]=='')&&(arr[1])){
     // it is affiliated by another user
     let userId=arr[1];
@@ -135,15 +130,9 @@ function attractedByChannel(){
   return User.getProperty('REFLIB_attracted_by_channel')
 }
 
-function getRefLink(botName, prefix){
-  if(!prefix){
-    prefix = "user"
-  }else{
-    Bot.setProperty("REFLIB_refList_" + "link_prefix", prefix, 'string');
-  }
-
-  let aff_link='https://t.me/' + botName + 
-    '?start=' + prefix + user.id;
+function getRefLink(botName){
+  let aff_link='https://telegram.me/' + botName + 
+    '?start=user' + user.id;
 
   let userKey = 'user' + user.id;
   user.chatId = chat.chatid;
