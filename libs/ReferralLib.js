@@ -1,6 +1,4 @@
-
 let trackOptions = {};
-tgid = user.telegramid
 
 function emitEvent(eventName, prms = {}){
   let evenFun = trackOptions[eventName]
@@ -33,7 +31,7 @@ function saveActiveUsers(userKey, refUser){
   Bot.setProperty('REFLIB_activityList', activityList, 'json');
 }
 
-function setReferralByAnotherUser(userId){
+function setReferralByAnotherUser(tgid){
   let userKey = 'REFLIB_user' + tgid;
   // it is for secure reason. User can pass any params to start!
   let refUser = Bot.getProperty(userKey);
@@ -61,6 +59,7 @@ function isAlreadyAttracted(){
 }
 
 function trackRef(){
+  
 
   let arr = params.split(prefix);
   if((arr[0]=='')&&(arr[1])){
@@ -133,10 +132,13 @@ function attractedByChannel(){
   return User.getProperty('REFLIB_attracted_by_channel')
 }
 
-function getRefLink(botName){
+function getRefLink(botName, tgid){
+    tgid = "user.telegramid"
+    Bot.setProperty("REFLIB_refList_" +, tgid, 'string');
+  }
 
   let aff_link='https://t.me/' + botName + 
-    '?start='+tgid;
+    '?start='+ tgid;
 
   let userKey = 'user' + tgid;
   user.chatId = chat.chatid;
