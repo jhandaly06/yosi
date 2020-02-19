@@ -143,7 +143,7 @@ function getRefLink(botName, prefix){
   }
 
   let aff_link='https://t.me/' + botName + 
-    '?start=' + user.id;
+    '?start='+prefix + user.id;
 
   let userKey = 'user' + user.id;
   user.chatId = chat.chatid;
