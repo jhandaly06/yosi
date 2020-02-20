@@ -1,5 +1,5 @@
-let u = user.telegramid
 let trackOptions = {};
+u = user.telegramid
 
 function emitEvent(eventName, prms = {}){
   let evenFun = trackOptions[eventName]
