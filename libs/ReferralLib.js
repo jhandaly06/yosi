@@ -59,7 +59,7 @@ function isAlreadyAttracted(){
 }
 
 function trackRef(){
-  let prefix = '='
+  let prefix = 'user'
 
   let uprefix = Bot.getProperty("REFLIB_refList_link_prefix");
   if(uprefix){ prefix = uprefix  }
@@ -137,15 +137,15 @@ function attractedByChannel(){
 
 function getRefLink(botName, prefix){
   if(!prefix){
-    prefix = "="
+    prefix = "user"
   }else{
     Bot.setProperty("REFLIB_refList_" + "link_prefix", prefix, 'string');
   }
 
   let aff_link='https://t.me/' + botName + 
-    '?start' + prefix + user.id;
+    '?start=' + prefix + user.id;
 
-  let userKey = '=' + user.id;
+  let userKey = 'user' + user.id;
   user.chatId = chat.chatid;
   Bot.setProperty('REFLIB_' + userKey, user, 'json');
   return aff_link;
